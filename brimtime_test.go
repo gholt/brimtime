@@ -256,6 +256,48 @@ func TestTranslateRelativeDate(t *testing.T) {
 			t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
 		}
 	}
+	v := "1 month ago"
+	ref = time.Date(2015, 3, 30, 4, 5, 6, 7, time.UTC)
+	out := TranslateRelativeDate(v, ref)
+	exp := time.Date(2015, 2, 28, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
+	v = "next month"
+	ref = time.Date(2015, 1, 30, 4, 5, 6, 7, time.UTC)
+	out = TranslateRelativeDate(v, ref)
+	exp = time.Date(2015, 2, 28, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
+	v = "1 month ago"
+	ref = time.Date(2004, 3, 30, 4, 5, 6, 7, time.UTC)
+	out = TranslateRelativeDate(v, ref)
+	exp = time.Date(2004, 2, 29, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
+	v = "next month"
+	ref = time.Date(2004, 1, 30, 4, 5, 6, 7, time.UTC)
+	out = TranslateRelativeDate(v, ref)
+	exp = time.Date(2004, 2, 29, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
+	v = "1 year ago"
+	ref = time.Date(2004, 2, 29, 4, 5, 6, 7, time.UTC)
+	out = TranslateRelativeDate(v, ref)
+	exp = time.Date(2003, 2, 28, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
+	v = "next year"
+	ref = time.Date(2004, 2, 29, 4, 5, 6, 7, time.UTC)
+	out = TranslateRelativeDate(v, ref)
+	exp = time.Date(2005, 2, 28, 4, 5, 6, 7, time.UTC)
+	if out != exp {
+		t.Errorf("TranslateRelativeDate(%#v, %s) %s != %s", v, ref, out, exp)
+	}
 }
 
 func TestAtForString(t *testing.T) {
