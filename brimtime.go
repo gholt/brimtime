@@ -20,7 +20,7 @@ import (
 	"strings"
 	"time"
 
-	"gopkg.in/gholt/brimtext.v1"
+	"github.com/gholt/brimtext"
 )
 
 var loweredMonths []string
