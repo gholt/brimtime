@@ -102,6 +102,8 @@ func TranslateWeekday(value string) int {
 // by one of the following characters "-/., ". Each item can represent a year,
 // month, or day and the months can be numbers, names, or prefixes. Some
 // examples: "1-2-2014" "2-Jan-2014" "January 2, 2014" "2,jan"
+//
+// A common call would be: TranslateYMD(value, []string{"", "D", "MD", "YMD"})
 func TranslateYMD(value string, biases []string) (int, int, int) {
 	parts := []string{}
 	for {
@@ -117,8 +119,11 @@ func TranslateYMD(value string, biases []string) (int, int, int) {
 			value = value[i+1:]
 		}
 	}
-	if len(parts) == 0 || len(parts) > 3 {
+	if len(parts) == 0 {
 		return 0, 0, 0
+	}
+	if len(parts) > 3 {
+		parts = parts[:3]
 	}
 	bias := strings.ToLower(biases[len(parts)])
 	bias_year := strings.Index(bias, "y")
@@ -236,9 +241,14 @@ func TranslateYMD(value string, biases []string) (int, int, int) {
 	return year, month, day
 }
 
-// TranslateDateRef returns the time the value represents with undetermined
-// items filled in from the reference time. The biases list is for the call to
-// TranslateYMD that is made, see there for more detail.
+// TranslateDateRef returns the time.Time the value represents with
+// undetermined items filled in from the reference time.
+//
+// The biases list is for the call to TranslateYMD that is made, see there for
+// more detail but the a common setting is []string{"", "D", "MD", "YMD"}.
+//
+// Note that only the date is detected with this function; any time information
+// in the value will be ignored.
 func TranslateDateRef(value string, biases []string, reference time.Time) time.Time {
 	year, month, day := TranslateYMD(value, biases)
 	if year == 0 {
@@ -385,10 +395,14 @@ func AtForString(hour int, minute int, duration int) string {
 	}
 }
 
+// TimeToUnixMicro returns the time as a count of microseconds within the Unix
+// epoch.
 func TimeToUnixMicro(t time.Time) int64 {
 	return t.Unix()*1000000 + int64(t.Nanosecond())/1000
 }
 
+// UnixMicroToTime returns the time for a given count of microseconds within
+// the Unix epoch.
 func UnixMicroToTime(t int64) time.Time {
 	return time.Unix(t/1000000, (t%1000000)*1000)
 }

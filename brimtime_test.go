@@ -134,6 +134,7 @@ func TestTranslateYMD(t *testing.T) {
 		ts{"Jan-Feb-2014", []string{"", "D", "MD", "YMD"}, 0, 0, 0},
 		ts{"garbage", []string{"", "D", "MD", "YMD"}, 0, 0, 0},
 		ts{"", []string{"", "D", "MD", "YMD"}, 0, 0, 0},
+		ts{"2014-01-02 12:34", []string{"", "D", "MD", "YMD"}, 2014, 1, 2},
 	} {
 		y, m, d := TranslateYMD(tt.v, tt.b)
 		if y != tt.y || m != tt.m || d != tt.d {
@@ -166,6 +167,7 @@ func TestTranslateDateRef(t *testing.T) {
 		ts{"Jan-Feb-2014", []string{"", "D", "MD", "YMD"}, time.Date(1901, 11, 22, 4, 5, 6, 7, time.UTC)},
 		ts{"garbage", []string{"", "D", "MD", "YMD"}, time.Date(1901, 11, 22, 4, 5, 6, 7, time.UTC)},
 		ts{"", []string{"", "D", "MD", "YMD"}, time.Date(1901, 11, 22, 4, 5, 6, 7, time.UTC)},
+		ts{"2014-01-02 12:34", []string{"", "D", "MD", "YMD"}, time.Date(2014, 1, 2, 4, 5, 6, 7, time.UTC)}, // Note that the time is ignored.
 	} {
 		o := TranslateDateRef(tt.v, tt.b, ref)
 		if o != tt.e {
